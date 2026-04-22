@@ -129,12 +129,26 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .e360-close:hover{background:#fff;color:#000}
 .e360-body{flex:1;display:flex;overflow:hidden}
 .e360-viewer{flex:1;background:#0a0a0a;position:relative;display:flex;align-items:center;justify-content:center;min-height:400px}
-.e360-tabs{position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.2);display:flex;z-index:20}
-.e360-tab{padding:8px 18px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;letter-spacing:.5px;text-transform:uppercase}
+.e360-tabs{position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.2);display:flex;z-index:20;flex-wrap:nowrap}
+.e360-tab{padding:8px 16px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
 .e360-tab.on{background:#fff;color:#000}
 .e360-panel{display:none;position:absolute;inset:0;align-items:center;justify-content:center}
 .e360-panel.on{display:flex}
 .e360-viewer-img{max-width:90%;max-height:90%;object-fit:contain}
+/* Split view */
+.split-view{width:100%;height:100%;display:flex;gap:2px;background:#1a1a1a}
+.split-half{flex:1;position:relative;background:#0a0a0a;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.split-half img{max-width:100%;max-height:100%;object-fit:contain}
+.split-label{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:4px 10px;z-index:5}
+.split-half model-viewer{width:100%;height:100%}
+@media(max-width:700px){.split-view{flex-direction:column}}
+/* AR panel */
+.ar-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;color:#fff;text-align:center;padding:40px;max-width:420px}
+.ar-wrap p{font-size:14px;line-height:1.6;color:#c8c8c8}
+.ar-wrap .ar-mobile{display:none}
+.ar-wrap .ar-qr-box{padding:14px;background:#fff}
+.ar-wrap .ar-qr-box img{display:block;width:180px;height:180px}
+@media(max-width:900px){.ar-wrap .ar-desktop{display:none}.ar-wrap .ar-mobile{display:flex;flex-direction:column;gap:14px;align-items:center}}
 .e360-sidebar{width:280px;border-left:1px solid rgba(255,255,255,0.08);padding:24px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#0a0a0a}
 .e360-pname{font-size:15px;font-weight:700;color:#fff;line-height:1.3}
 .e360-price{font-size:22px;font-weight:700;color:#fff}
@@ -251,16 +265,33 @@ model-viewer{width:100%;height:100%;background:#0a0a0a;--poster-color:#0a0a0a}
       <div class="e360-viewer">
         <div class="e360-tabs">
           <div class="e360-tab on" onclick="switchTab(0)">Product</div>
-          <div class="e360-tab" onclick="switchTab(1)">On Vehicle</div>
-          <div class="e360-tab" onclick="switchTab(2)">3D</div>
-          <div class="e360-tab" onclick="switchTab(3)">AR</div>
+          <div class="e360-tab" onclick="switchTab(1)">3D View</div>
+          <div class="e360-tab" onclick="switchTab(2)">On Vehicle</div>
+          <div class="e360-tab" onclick="switchTab(3)">Split View</div>
+          <div class="e360-tab" onclick="switchTab(4)">AR</div>
         </div>
         <div class="e360-panel on" id="panel-0"><img class="e360-viewer-img" id="product-img" src=""></div>
-        <div class="e360-panel" id="panel-1"><img class="e360-viewer-img" id="vehicle-img" src=""></div>
-        <div class="e360-panel" id="panel-2" style="width:100%;height:100%"></div>
-        <div class="e360-panel" id="panel-3" style="flex-direction:column;gap:20px;color:#fff;text-align:center;padding:40px">
-          <p style="font-size:14px;max-width:320px;line-height:1.6">Scan this QR code with your phone to view this accessory in augmented reality.</p>
-          <img src="images/ar-qr.jpg" style="width:180px;height:180px;background:#fff;padding:10px">
+        <div class="e360-panel" id="panel-1" style="width:100%;height:100%"></div>
+        <div class="e360-panel" id="panel-2"><img class="e360-viewer-img" id="vehicle-img" src=""></div>
+        <div class="e360-panel" id="panel-3" style="width:100%;height:100%;padding:0">
+          <div class="split-view" id="split-view">
+            <div class="split-half" id="split-3d"><span class="split-label">3D Model</span></div>
+            <div class="split-half"><span class="split-label">On Vehicle</span><img id="split-vehicle-img" src=""></div>
+          </div>
+        </div>
+        <div class="e360-panel" id="panel-4">
+          <div class="ar-wrap">
+            <div class="ar-desktop">
+              <p><strong>View in Augmented Reality</strong></p>
+              <p>Scan this QR code with your phone camera to see this accessory in your space.</p>
+              <div class="ar-qr-box" style="margin-top:16px"><img id="ar-qr-img" src="images/ar-qr.jpg"></div>
+            </div>
+            <div class="ar-mobile">
+              <p><strong>View in Augmented Reality</strong></p>
+              <p>Tap below to place this accessory in your space using your phone's camera.</p>
+              <button id="ar-launch-btn" class="e360-atc" style="width:auto;padding:14px 28px">🔮 Launch AR</button>
+            </div>
+          </div>
         </div>
       </div>
       <aside class="e360-sidebar">
@@ -268,7 +299,7 @@ model-viewer{width:100%;height:100%;background:#0a0a0a;--poster-color:#0a0a0a}
           <div class="e360-pname" id="e360-pname">—</div>
           <div class="e360-price" id="e360-price" style="margin-top:8px">—</div>
         </div>
-        <button class="e360-ar-btn" onclick="switchTab(3)">View in AR</button>
+        <button class="e360-ar-btn" onclick="switchTab(4)">View in AR</button>
         <button class="e360-atc" id="e360-add-btn">Add to Build</button>
       </aside>
     </div>
@@ -280,7 +311,7 @@ model-viewer{width:100%;height:100%;background:#0a0a0a;--poster-color:#0a0a0a}
 // Accessory catalog — Telluride X-Pro SX
 const ACCESSORIES = [
   {id:'alloy-wheel',name:'Alloy Wheel',desc:'20-inch matte black multi-spoke alloy wheel with Kia center cap.',price:695,img:'images/real/01-alloy-wheel.jpg',cat:'exterior'},
-  {id:'roof-cross-bars',name:'Roof Cross Bars',desc:'Low-profile aerodynamic crossbars in matte black. 165 lb dynamic load.',price:389,img:'images/real/02-cross-bars.jpg',hasGlb:true,glb:'models/VKB3Z7855100EB-opt.glb',vehicleImg:'images/real/02-cross-bars.jpg',cat:'exterior'},
+  {id:'roof-cross-bars',name:'Roof Cross Bars',desc:'Low-profile aerodynamic crossbars in matte black. 165 lb dynamic load. OE Part #VM1PZ7855100J.',price:389,img:'images/real/02-cross-bars.jpg',hasGlb:true,glb:'models/cross-bars.glb',vehicleImg:'images/vehicle-overlays/telluride-crossbars-front.jpg',vehicleImgs:['images/vehicle-overlays/telluride-crossbars-front.jpg','images/vehicle-overlays/ev9-crossbars-side.jpg'],cat:'exterior'},
   {id:'wheel-locks',name:'Wheel Locks',desc:'Set of four hardened chrome locking lug nuts with unique key.',price:89,img:'images/real/03-wheel-locks.jpg',cat:'exterior'},
   {id:'running-boards',name:'Running Boards',desc:'Textured black side steps with Kia branding. Non-slip tread.',price:1095,img:'images/real/04-running-boards.jpg',cat:'exterior'},
   {id:'roadside-kit',name:'Roadside Assistance Kit',desc:'Kia-branded emergency kit with jumper cables, warning triangle, flashlight, and tools.',price:125,img:'images/real/05-roadside-kit.jpg',cat:'interior'},
@@ -384,12 +415,29 @@ function openE360(id){
   document.getElementById('e360-price').textContent = '+$' + acc.price;
   document.getElementById('product-img').src = acc.img;
   document.getElementById('vehicle-img').src = acc.vehicleImg || acc.img;
+  document.getElementById('split-vehicle-img').src = acc.vehicleImg || acc.img;
   const addBtn = document.getElementById('e360-add-btn');
   addBtn.textContent = selected[acc.id] ? 'Remove from Build' : 'Add to Build';
   addBtn.onclick = () => { toggleAcc(acc.id); closeE360(); };
-  // Load GLB if 3D tab supported
-  const panel3d = document.getElementById('panel-2');
-  panel3d.innerHTML = acc.hasGlb ? `<model-viewer src="${acc.glb}" camera-controls auto-rotate shadow-intensity="1" exposure="0.8" environment-image="neutral" style="width:100%;height:100%"></model-viewer>` : '<p style="color:#999;padding:40px">3D model not available for this accessory yet.</p>';
+  // Load GLB into 3D panel and Split panel
+  const panel3d = document.getElementById('panel-1');
+  const split3d = document.getElementById('split-3d');
+  if(acc.hasGlb){
+    const mvTag = `<model-viewer src="${acc.glb}" camera-controls auto-rotate shadow-intensity="1" exposure="0.9" environment-image="neutral" ar ar-modes="webxr scene-viewer quick-look" style="width:100%;height:100%"></model-viewer>`;
+    panel3d.innerHTML = mvTag;
+    split3d.innerHTML = '<span class="split-label">3D Model</span>' + mvTag;
+    // Wire up mobile AR launch button
+    const arBtn = document.getElementById('ar-launch-btn');
+    if(arBtn){
+      arBtn.onclick = () => {
+        const mv = panel3d.querySelector('model-viewer');
+        if(mv && mv.canActivateAR) mv.activateAR();
+      };
+    }
+  } else {
+    panel3d.innerHTML = '<p style="color:#999;padding:40px;text-align:center">3D model not available yet.</p>';
+    split3d.innerHTML = '<span class="split-label">3D Model</span><p style="color:#999;padding:40px;text-align:center">Not available</p>';
+  }
   document.getElementById('e360-overlay').classList.add('open');
   switchTab(0);
 }
