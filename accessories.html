@@ -118,40 +118,57 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .grid{grid-template-columns:1fr}
 }
 
-/* ENGAGE360 MODAL (Ford-style, dark Kia theme) */
-.e360-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+/* ENGAGE360 MODAL (Ford-style, themeable dark/light) */
+.e360-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;
+  /* Default: DARK theme */
+  --bg:#0a0a0a;--bg-alt:rgba(20,20,20,.95);--surface:#0a0a0a;--border:rgba(255,255,255,.1);--border-soft:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.15);
+  --text:#fff;--text-dim:#c8c8c8;--text-muted:#888;--control-bg:rgba(255,255,255,.08);--control-hover:rgba(255,255,255,.2);
+  --tab-on-bg:#fff;--tab-on-text:#000;--dot:rgba(255,255,255,.3);--dot-on:#fff;--fitment:#5fd671;
+  --label-bg:rgba(0,0,0,.6);--shadow:0 20px 60px rgba(0,0,0,.8);--shadow-sm:0 2px 12px rgba(0,0,0,.4);
+  --kia-red:#BB162B;--kia-red-dark:#a01325;
+}
+.e360-overlay.light{
+  --bg:#fff;--bg-alt:#f7f7f7;--surface:#fff;--border:#e0e0e0;--border-soft:#ececec;--border-strong:#d5d5d5;
+  --text:#111;--text-dim:#444;--text-muted:#888;--control-bg:#f2f2f2;--control-hover:#e6e6e6;
+  --tab-on-bg:#111;--tab-on-text:#fff;--dot:#ccc;--dot-on:#111;--fitment:#2d7d46;
+  --label-bg:rgba(255,255,255,.92);--shadow:0 20px 60px rgba(0,0,0,.25);--shadow-sm:0 2px 12px rgba(0,0,0,.1);
+  background:rgba(60,60,60,.5);
+}
+.e360-overlay.light .e360-split-label{color:#111;border:1px solid var(--border)}
 .e360-overlay.open{display:flex}
-.e360-modal{background:#0a0a0a;border:1px solid rgba(255,255,255,.1);border-radius:12px;width:90vw;height:90vh;max-width:1280px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.8)}
-.e360-modal-top{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.08);gap:16px}
-.e360-modal-top h2{font-size:16px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
-.e360-logo{font-size:13px;font-weight:700;color:#BB162B;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
-.e360-logo span{background:#BB162B;color:#fff;border-radius:4px;padding:2px 8px;font-size:11px}
-.e360-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#fff;flex-shrink:0;border:none}
-.e360-close:hover{background:rgba(255,255,255,.2)}
+.e360-modal{background:var(--bg);border:1px solid var(--border);border-radius:12px;width:90vw;height:90vh;max-width:1280px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);color:var(--text)}
+.e360-modal-top{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border-soft);gap:16px}
+.e360-modal-top h2{font-size:16px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+.e360-logo{font-size:13px;font-weight:700;color:var(--kia-red);letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.e360-logo span{background:var(--kia-red);color:#fff;border-radius:4px;padding:2px 8px;font-size:11px}
+.e360-theme-toggle{width:32px;height:32px;border-radius:50%;background:var(--control-bg);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);flex-shrink:0;border:none;transition:background .15s}
+.e360-theme-toggle:hover{background:var(--control-hover)}
+.e360-close{width:32px;height:32px;border-radius:50%;background:var(--control-bg);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--text);flex-shrink:0;border:none}
+.e360-close:hover{background:var(--control-hover)}
 .e360-body{display:flex;flex:1;overflow:hidden}
-.e360-viewer{flex:1;background:#0a0a0a;display:flex;align-items:stretch;position:relative;min-height:400px;overflow:visible}
-.e360-tabs{display:flex;gap:0;position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(20,20,20,.95);border-radius:50px;border:1px solid rgba(255,255,255,.15);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.4);z-index:20}
-.e360-tab{padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;color:#c8c8c8;transition:all .18s;white-space:nowrap}
-.e360-tab.on{background:#fff;color:#000}
+.e360-viewer{flex:1;background:var(--surface);display:flex;align-items:stretch;position:relative;min-height:400px;overflow:visible}
+.e360-tabs{display:flex;gap:0;position:absolute;top:16px;left:50%;transform:translateX(-50%);background:var(--bg-alt);border-radius:50px;border:1px solid var(--border-strong);overflow:hidden;box-shadow:var(--shadow-sm);z-index:20}
+.e360-tab{padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-dim);transition:all .18s;white-space:nowrap}
+.e360-tab.on{background:var(--tab-on-bg);color:var(--tab-on-text)}
 .e360-panel{display:none;position:absolute;inset:0;align-items:center;justify-content:center}
 .e360-col{flex-direction:column}
 @keyframes mv-spin{to{transform:rotate(360deg)}}
 
-/* Rotation controls (On Vehicle) */
-.e360-rot-controls{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:rgba(20,20,20,.9);border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:8px 16px;box-shadow:0 2px 12px rgba(0,0,0,.4);z-index:20}
-.e360-rot-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:16px;color:#fff}
-.e360-rot-btn:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+/* Rotation controls */
+.e360-rot-controls{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:var(--bg-alt);border:1px solid var(--border-strong);border-radius:50px;padding:8px 16px;box-shadow:var(--shadow-sm);z-index:20}
+.e360-rot-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border-strong);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:16px;color:var(--text)}
+.e360-rot-btn:hover{border-color:var(--text);background:var(--control-bg)}
 .e360-rot-dots{display:flex;gap:6px;align-items:center}
-.e360-dot,.e360-split-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:background .15s}
-.e360-dot.on,.e360-split-dot.on{background:#fff}
-.e360-spin-hint{font-size:11px;color:#999;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.e360-dot,.e360-split-dot{width:7px;height:7px;border-radius:50%;background:var(--dot);cursor:pointer;transition:background .15s}
+.e360-dot.on,.e360-split-dot.on{background:var(--dot-on)}
+.e360-spin-hint{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px;white-space:nowrap}
 
 /* Split view */
 .e360-split{display:flex;width:100%;height:100%}
-.e360-split-divider{width:1px;align-self:center;height:70%;background:rgba(255,255,255,.15);flex-shrink:0}
+.e360-split-divider{width:1px;align-self:center;height:70%;background:var(--border-strong);flex-shrink:0}
 .e360-split-left{flex:1;min-width:0;position:relative;box-sizing:border-box;height:100%}
 .e360-split-right{flex:1;min-width:0;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box;height:100%}
-.e360-split-label{position:absolute;top:56px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:50px;white-space:nowrap;z-index:10;letter-spacing:.5px}
+.e360-split-label{position:absolute;top:56px;left:50%;transform:translateX(-50%);background:var(--label-bg);color:var(--text);font-size:11px;font-weight:700;padding:3px 12px;border-radius:50px;white-space:nowrap;z-index:10;letter-spacing:.5px}
 
 /* AR panel */
 .e360-ar-panel{display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:40px;gap:20px}
@@ -160,30 +177,30 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .e360-ar-qr img{max-width:200px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.4);background:#fff;padding:10px}
 
 /* Sidebar */
-.e360-sidebar{width:300px;border-left:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;padding:20px;gap:14px;overflow-y:auto;background:#0a0a0a}
-.e360-pname{font-size:15px;font-weight:700;color:#fff;line-height:1.35}
-.e360-price{font-size:22px;font-weight:700;color:#fff}
-.e360-divider{border:none;border-top:1px solid rgba(255,255,255,.08)}
-.e360-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:8px}
-.e360-fitment{font-size:13px;color:#5fd671;font-weight:600}
-.e360-ar-btn-side{width:100%;background:#BB162B;color:#fff;border:none;border-radius:50px;height:44px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s}
-.e360-ar-btn-side:hover{background:#a01325}
-.e360-atc{width:100%;background:transparent;color:#fff;border:1.5px solid #fff;border-radius:50px;height:44px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s}
-.e360-atc:hover{background:#fff;color:#000}
-.e360-atc.added{background:#fff;color:#000}
-model-viewer{width:100%;height:100%;background:#0a0a0a;--poster-color:#0a0a0a}
+.e360-sidebar{width:300px;border-left:1px solid var(--border-soft);display:flex;flex-direction:column;padding:20px;gap:14px;overflow-y:auto;background:var(--bg)}
+.e360-pname{font-size:15px;font-weight:700;color:var(--text);line-height:1.35}
+.e360-price{font-size:22px;font-weight:700;color:var(--text)}
+.e360-divider{border:none;border-top:1px solid var(--border-soft)}
+.e360-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:8px}
+.e360-fitment{font-size:13px;color:var(--fitment);font-weight:600}
+.e360-ar-btn-side{width:100%;background:var(--kia-red);color:#fff;border:none;border-radius:50px;height:44px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .18s}
+.e360-ar-btn-side:hover{background:var(--kia-red-dark)}
+.e360-atc{width:100%;background:transparent;color:var(--text);border:1.5px solid var(--text);border-radius:50px;height:44px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s}
+.e360-atc:hover{background:var(--text);color:var(--bg)}
+.e360-atc.added{background:var(--text);color:var(--bg)}
+model-viewer{width:100%;height:100%;background:var(--surface);--poster-color:var(--surface)}
 
 @media(max-width:700px){
   .e360-overlay{padding:0}
   .e360-modal{max-height:100vh;max-width:100vw;width:100vw;border-radius:0;height:100vh}
-  .e360-modal-top{padding:10px 16px;position:sticky;top:0;z-index:30;background:#0a0a0a}
+  .e360-modal-top{padding:10px 16px;position:sticky;top:0;z-index:30;background:var(--bg)}
   .e360-modal-top h2{font-size:13px}
   .e360-logo{display:none !important}
   .e360-body{flex-direction:column;flex:1;overflow-y:auto}
   .e360-viewer{flex:none;display:flex;flex-direction:column;height:auto;min-height:0;overflow:visible}
-  .e360-tabs{position:static;transform:none;margin:0 auto;flex-wrap:nowrap;border-radius:0;border:none;border-bottom:1px solid rgba(255,255,255,.08);box-shadow:none;background:#0a0a0a;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .e360-tabs{position:static;transform:none;margin:0 auto;flex-wrap:nowrap;border-radius:0;border:none;border-bottom:1px solid var(--border-soft);box-shadow:none;background:var(--bg);max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
   .e360-tab{padding:10px 12px;font-size:11px;border-radius:0;flex-shrink:0}
-  .e360-tab.on{background:none;color:#fff;border-bottom:2px solid #fff}
+  .e360-tab.on{background:none;color:var(--text);border-bottom:2px solid var(--text)}
   .e360-panel{position:relative !important;height:60vw;min-height:250px;max-height:360px;flex-shrink:0;width:100%;overflow:hidden}
   .e360-rot-controls{display:none !important}
   .e360-split{flex-direction:column}
@@ -192,7 +209,7 @@ model-viewer{width:100%;height:100%;background:#0a0a0a;--poster-color:#0a0a0a}
   .e360-tab-split{display:none !important}
   .qr-desktop{display:none !important}
   .ar-mobile-only{display:block !important}
-  .e360-sidebar{width:100%;flex:none;border-left:none;border-top:1px solid rgba(255,255,255,.08);padding:14px 16px;gap:10px}
+  .e360-sidebar{width:100%;flex:none;border-left:none;border-top:1px solid var(--border-soft);padding:14px 16px;gap:10px}
   .e360-price{font-size:18px}
   .e360-pname{font-size:13px}
 }
@@ -292,6 +309,10 @@ model-viewer{width:100%;height:100%;background:#0a0a0a;--poster-color:#0a0a0a}
       <h2 id="e360-title">—</h2>
       <div style="display:flex;align-items:center;gap:12px">
         <div class="e360-logo"><span>ENGAGE360</span> 3D &amp; AR Viewer</div>
+        <button class="e360-theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+          <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
         <button class="e360-close" onclick="closeE360()">×</button>
       </div>
     </div>
@@ -595,6 +616,30 @@ function launchMobileAR(){
   if(mv && mv.canActivateAR) mv.activateAR();
   else alert('AR not supported on this device');
 }
+
+// Theme toggle
+function toggleTheme(){
+  const overlay = document.getElementById('e360-overlay');
+  const isLight = overlay.classList.toggle('light');
+  document.getElementById('theme-icon-sun').style.display = isLight ? 'block' : 'none';
+  document.getElementById('theme-icon-moon').style.display = isLight ? 'none' : 'block';
+  try { localStorage.setItem('kia-e360-theme', isLight ? 'light' : 'dark'); } catch(e){}
+}
+// Restore saved theme
+(function(){
+  try {
+    if(localStorage.getItem('kia-e360-theme') === 'light'){
+      const overlay = document.getElementById('e360-overlay');
+      if(overlay){
+        overlay.classList.add('light');
+        const s = document.getElementById('theme-icon-sun');
+        const m = document.getElementById('theme-icon-moon');
+        if(s) s.style.display = 'block';
+        if(m) m.style.display = 'none';
+      }
+    }
+  } catch(e){}
+})();
 
 // Mobile AR detection (iOS/Android)
 const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
